@@ -1,10 +1,17 @@
-import 'dotenv/config';
+try {
+  await import('dotenv/config');
+} catch (error) {
+  if (error?.code !== 'ERR_MODULE_NOT_FOUND') {
+    throw error;
+  }
+}
 import express from 'express';
 import cors from 'cors';
-import connectDB from './db.js';
-import employeesRouter from './routes/employees.js';
-import insightsRouter from './routes/insights.js';
-import metadataRouter from './routes/metadata.js';
+
+const { default: connectDB } = await import('./db.js');
+const { default: employeesRouter } = await import('./routes/employees.js');
+const { default: insightsRouter } = await import('./routes/insights.js');
+const { default: metadataRouter } = await import('./routes/metadata.js');
 
 await connectDB();
 
